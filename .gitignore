@@ -13,9 +13,3 @@
 /_clientLogs.txt
 /CreateChainedCertificates/bin/
 /CreateChainedCertificates/obj
-*.suo
-*.user
-_ReSharper.*
-bin
-obj
-packages
