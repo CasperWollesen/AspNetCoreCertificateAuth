@@ -14,7 +14,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNetCoreCertificateAuthAp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNetCoreCertificateAuthApiSelfSigned", "AspNetCoreCertificateAuthApiSelfSigned\AspNetCoreCertificateAuthApiSelfSigned.csproj", "{C47FE56D-D781-4FB9-B0D4-8D6C466959DA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CreateChainedCertificates", "CreateChainedCertificates\CreateChainedCertificates.csproj", "{ED0416FE-1EE0-4DBA-AB7D-F440D825EABB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CreateChainedCertificates", "CreateChainedCertificates\CreateChainedCertificates.csproj", "{ED0416FE-1EE0-4DBA-AB7D-F440D825EABB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApp1", "ConsoleApp1\ConsoleApp1.csproj", "{6A26E5F5-3059-4B62-9FFE-531242C6AC6B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -38,6 +40,10 @@ Global
 		{ED0416FE-1EE0-4DBA-AB7D-F440D825EABB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ED0416FE-1EE0-4DBA-AB7D-F440D825EABB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ED0416FE-1EE0-4DBA-AB7D-F440D825EABB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6A26E5F5-3059-4B62-9FFE-531242C6AC6B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A26E5F5-3059-4B62-9FFE-531242C6AC6B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A26E5F5-3059-4B62-9FFE-531242C6AC6B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A26E5F5-3059-4B62-9FFE-531242C6AC6B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
