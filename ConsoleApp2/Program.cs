@@ -108,6 +108,8 @@ namespace ConsoleApp2
                     Method = HttpMethod.Get,
                 };
 
+                request.Headers.Add("api_key", new []{"1234", "9876"});
+
                 if (ssl)
                 {
                     request.Headers.Add("X-ARR-ClientCert", cert.GetRawCertDataString());

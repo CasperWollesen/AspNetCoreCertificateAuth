@@ -14,8 +14,33 @@ namespace AspNetCoreCertificateAuthApi.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()
         {
+            if(Request.HttpContext.Request.Headers.TryGetValue("api_key", out var value))
+            {
+                foreach (var v in value)
+                {
+                    Console.WriteLine($"{v}");
+                }
+            }
+
+            //X509Certificate2 clientCertInRequest = Request.HttpContext.Connection.ClientCertificate;
+            //if (!clientCertInRequest.Verify() || !AllowedCerialNumbers(clientCertInRequest.SerialNumber))
+            //{
+            //    Response.StatusCode = 404;
+            //    return null;
+            //}
+
             return new string[] { "value1", "value2", "value3", DateTime.Now.ToString(), DateTime.Now.ToShortDateString(), DateTime.Now.ToShortTimeString(), };
         }
+
+        //https://stackoverflow.com/questions/40014047/add-client-certificate-to-net-core-httpclient
+        //private static X509Certificate2? Signer()
+        //{
+        //    using var cert = X509Certificate2.CreateFromSignedFile(Assembly.GetExecutingAssembly().Location);
+        //    if (cert is null)
+        //        return null;
+
+        //    return new X509Certificate2(cert);
+        //}
 
         // GET api/values/5
         [HttpGet("{id}")]
