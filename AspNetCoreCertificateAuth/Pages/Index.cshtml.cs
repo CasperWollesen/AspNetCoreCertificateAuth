@@ -26,11 +26,12 @@ namespace AspNetCoreCertificateAuth.Pages
         public async Task OnGetAsync()
         {
             // var selfSigned = await CallApiSelfSignedWithXARRClientCertHeader();
-            var client_intermediate_localhost = await CallApiClientIntermediateLocalhost();
+            // var client_intermediate_localhost = await CallApiClientIntermediateLocalhost();
             try
             {
                 // This cert must fail, wrong certificate type, extension is missing for client auth
-                var intermediate_localhost = await CallApiWithintermediateLocalhost();
+                var selfSigned = await CallApiSelfSignedWithXARRClientCertHeader();
+                // var intermediate_localhost = await CallApiWithintermediateLocalhost();
             }
             catch (Exception ex)
             {
@@ -63,7 +64,8 @@ namespace AspNetCoreCertificateAuth.Pages
         {
             try
             {
-                var cert = new X509Certificate2(Path.Combine(_environment.ContentRootPath, "sts_dev_cert.pfx"), "1234");
+
+                var cert = new X509Certificate2(Path.Combine(@"C:\Development\GitHub\AspNetCoreCertificateAuth\AspNetCoreCertificateAuthApiSelfSigned\", "sts_dev_cert.pfx"), "1234");
                 var client = _clientFactory.CreateClient();
                 var request = new HttpRequestMessage()
                 {
