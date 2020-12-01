@@ -23,14 +23,16 @@ namespace AspNetCoreCertificateAuthApi
 
         public void ConfigureServices(IServiceCollection services)
         {
+
             services.AddSingleton<MyCertificateValidationService>();
             services.AddAuthentication(CertificateAuthenticationDefaults.AuthenticationScheme)
-                .AddCertificate(options => 
+                .AddCertificate(options =>
                 {
                     options.AllowedCertificateTypes = CertificateTypes.SelfSigned;
                     options.Events = new CertificateAuthenticationEvents
                     {
-                        OnCertificateValidated = context => {
+                        OnCertificateValidated = context =>
+                        {
                             var validationService = context.HttpContext.RequestServices.GetService<MyCertificateValidationService>();
                             if (validationService.ValidateCertificate(context.ClientCertificate))
                             {
@@ -40,7 +42,8 @@ namespace AspNetCoreCertificateAuthApi
                                 };
                                 context.Principal = new ClaimsPrincipal(new ClaimsIdentity(claims, context.Scheme.Name));
                                 context.Success();
-                            } else { context.Fail("invalid cert"); }
+                            }
+                            else { context.Fail("invalid cert"); }
                             return Task.CompletedTask;
                         }
                     };
@@ -48,13 +51,14 @@ namespace AspNetCoreCertificateAuthApi
 
             services.AddAuthorization();
 
+
             services.AddCertificateForwarding(options =>
             {
                 options.CertificateHeader = "X-ARR-ClientCert";
                 options.HeaderConverter = (headerValue) =>
                 {
                     X509Certificate2 clientCertificate = null;
-                    if(!string.IsNullOrWhiteSpace(headerValue))
+                    if (!string.IsNullOrWhiteSpace(headerValue))
                     {
                         byte[] bytes = StringToByteArray(headerValue);
                         clientCertificate = new X509Certificate2(bytes);
@@ -63,6 +67,7 @@ namespace AspNetCoreCertificateAuthApi
                     return clientCertificate;
                 };
             });
+
 
             services.AddControllers();
         }

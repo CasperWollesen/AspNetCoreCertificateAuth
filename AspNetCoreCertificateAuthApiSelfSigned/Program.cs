@@ -21,19 +21,27 @@ namespace AspNetCoreCertificateAuthApi
             .UseStartup<Startup>()
             .ConfigureKestrel(options =>
             {
-                //options.Listen(IPAddress.Any, 80);
-                //options.Listen(IPAddress.Any, 44380, listenOptions =>
-                //{
-                //    listenOptions.UseHttps(Path.Combine(@"C:\Development\GitHub\AspNetCoreCertificateAuth\AspNetCoreCertificateAuthApiSelfSigned\", "sts_dev_cert.pfx"), "1234");
-                //});
-
                 //var cert = new X509Certificate2(Path.Combine(@"C:\Development\GitHub\AspNetCoreCertificateAuth\AspNetCoreCertificateAuthApiSelfSigned\", "sts_dev_cert.pfx"), "1234");
                 //options.ConfigureHttpsDefaults(o =>
                 //{
-
                 //    o.ServerCertificate = cert;
                 //    o.ClientCertificateMode = ClientCertificateMode.RequireCertificate;
                 //});
+
+                // options.Listen(IPAddress.Any, 5004);
+
+                options.Listen(IPAddress.Any, 5007, listenOptions =>
+                {
+                    listenOptions.UseHttps(Path.Combine(@"C:\Development\GitHub\AspNetCoreCertificateAuth\AspNetCoreCertificateAuthApiSelfSigned\", "sts_dev_cert.pfx"), "1234",
+                        adapterOptions =>
+                        {
+                            //adapterOptions.SslProtocols = System.Security.Authentication.SslProtocols.Tls;
+                            //adapterOptions.ClientCertificateMode = ClientCertificateMode.RequireCertificate;
+                        } );
+                    
+                });
+
+
             })
             .Build();
     }

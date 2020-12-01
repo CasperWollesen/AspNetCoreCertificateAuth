@@ -2,7 +2,6 @@
 using System.IO;
 using System.Net.Http;
 using System.Security.Cryptography.X509Certificates;
-using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace ConsoleApp2
@@ -11,11 +10,11 @@ namespace ConsoleApp2
     {
         static async Task Main(string[] args)
         {
-            
+
 
             try
             {
-                
+
                 Console.WriteLine("Web Server Testing: ");
 
                 var port = GetPortNumber();
@@ -31,10 +30,10 @@ namespace ConsoleApp2
                     if (exit.Key == ConsoleKey.X)
                     {
                         @continue = false;
-                        
+
                     }
                 }
-                 
+
                 Console.WriteLine("Exit - press any key to close application.");
                 Console.ReadKey();
 
@@ -67,7 +66,7 @@ namespace ConsoleApp2
 
         private static int GetPortNumber()
         {
-            var port = 5004; // 44381; // Kestrel 5001 - iss 44379
+            var port = 5007; // 44381; // Kestrel 5001 - iss 44379
             Console.WriteLine($"Continue with port: {port} - or enter new one: ");
             var inputPort = Console.ReadLine();
             if (!string.IsNullOrWhiteSpace(inputPort) && int.TryParse(inputPort, out int newPort))
@@ -85,7 +84,15 @@ namespace ConsoleApp2
         {
             try
             {
-                var cert = new X509Certificate2(Path.Combine(@"C:\Development\GitHub\AspNetCoreCertificateAuth\AspNetCoreCertificateAuthApiSelfSigned\", "sts_dev_cert.pfx"), "1234");
+                var cert_path =
+                    // @"C:\tmp\ME_Scada_Cloud_multi.pfx";
+                    Path.Combine(@"C:\Development\GitHub\AspNetCoreCertificateAuth\AspNetCoreCertificateAuthApiSelfSigned\", "sts_dev_cert.pfx");
+                var cert_password =
+                // "P1234p";
+                "1234";
+
+
+                var cert = new X509Certificate2(cert_path, cert_password);
 
                 string url = $"https://{hostname}:{port}/api/values";
 
@@ -96,37 +103,42 @@ namespace ConsoleApp2
                 if (ssl)
                 {
                     clientHandler.ClientCertificates.Add(cert);
-                    // clientHandler.ClientCertificateOptions = ClientCertificateOption.Manual;
                     clientHandler.ServerCertificateCustomValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
                 }
 
                 var client = new HttpClient(clientHandler);
 
-                var request = new HttpRequestMessage()
+                for (var loop = 0; loop < 5; loop++)
                 {
-                    RequestUri = new Uri(url),
-                    Method = HttpMethod.Get,
-                };
+                    var request = new HttpRequestMessage()
+                    {
+                        RequestUri = new Uri(url),
+                        Method = HttpMethod.Get,
+                    };
 
-                request.Headers.Add("api_key", new []{"1234", "9876"});
+                    request.Headers.Add("api_key", new[] { "1234", "9876" });
 
-                if (ssl)
-                {
-                    request.Headers.Add("X-ARR-ClientCert", cert.GetRawCertDataString());
+                    if (ssl)
+                    {
+                        request.Headers.Add("X-ARR-ClientCert", cert.GetRawCertDataString());
+                    }
+
+
+                    var response = await client.SendAsync(request);
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var responseContent = await response.Content.ReadAsStringAsync();
+                        // var data = JsonDocument.Parse(responseContent);
+                        Console.WriteLine($"Success - StatusCode: {response.StatusCode}. Data: " + responseContent);
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Failed - StatusCode: {response.StatusCode}");
+                    }
                 }
 
-                var response = await client.SendAsync(request);
-                if (response.IsSuccessStatusCode)
-                {
-                    var responseContent = await response.Content.ReadAsStringAsync();
-                    // var data = JsonDocument.Parse(responseContent);
-                    Console.WriteLine($"Success - StatusCode: {response.StatusCode}. Data: " + responseContent);
-                }
-                else
-                {
-                    Console.WriteLine($"Failed - StatusCode: {response.StatusCode}");
-                }
-                
+
+
                 return true;
             }
             catch (Exception e)
